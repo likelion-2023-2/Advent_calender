@@ -9,12 +9,13 @@
 
   background-color: #f1f1ef;
   border-radius: 200px 200px 0 0;
-  margin-left: calc(390px * 0.05 * 0.5);
+  margin-left: calc(100vw * 0.05 * 0.5);
 }
 
 @media (hover: hover) {
   .white-door-post {
     width: calc(390px * 0.95);
+    margin-left: calc(390px * 0.05 * 0.5);
   }
 }
 

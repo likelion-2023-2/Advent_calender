@@ -67,6 +67,17 @@
   margin-top: 28.8vh;
 }
 
+.box:not(.box-opened)::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 11.5%;
+  width: 77%;
+  height: 77%;
+  background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
 .box {
   display: inline-flex;
   background-image: url("../img/box.png");
@@ -94,13 +105,319 @@
   overflow: hidden;
 }
 
-.box-opened::before {
+.box.today::before {
+  content: none;
+}
+
+.box.today {
+  opacity: 1;
+}
+
+.box.box-opened::before {
   content: "";
   position: absolute;
   top: 10%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
-  background-color: rgba(0, 0, 0, 0.5); /* 검은색 배경 필터 색상 및 투명도 조절 */
+  left: 11.5%;
+  width: 77%;
+  height: 77%;
+  background-color: rgba(0, 0, 0, 0.3); /* 검은색 배경 필터 색상 및 투명도 조절 */
   pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
+}
+
+.box-date {
+  position: relative;
+}
+
+.box.written-date::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 11.5%;
+  width: 77%;
+  height: 77%;
+  background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.box.written-date img {
+  height: 7vh;
+}
+
+.box-content-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* .box.written-date > .box-date > p {
+  color: rgb(249, 243, 242);
+} */
+
+.box-date p {
+  position: relative;
+  z-index: 2;
+}
+
+@media (width < 430px) {
+  .box {
+    margin: -0.45vh;
+  }
+
+  .boxs {
+    margin-top: 28.5vh;
+  }
+}
+
+@media (width < 421px) {
+  .box {
+    width: 9.3vh;
+    height: 9.3vh;
+    margin: -0.42vh;
+  }
+
+  .boxs {
+    margin-top: 28vh;
+  }
+}
+
+@media (width < 416px) {
+  .box {
+    margin: -0.47vh;
+  }
+
+  .boxs {
+    margin-top: 27.3vh;
+  }
+}
+
+@media (width < 410px) {
+  .box {
+    margin: -0.5vh;
+  }
+  .boxs {
+    margin-top: 27.5vh;
+  }
+}
+
+@media (width < 406px) {
+  .box {
+    margin: -0.6vh;
+  }
+  .boxs {
+    margin-top: 27vh;
+  }
+}
+
+@media (width < 401px) {
+  .box {
+    margin: -0.65vh;
+  }
+  .boxs {
+    margin-top: 26.8vh;
+  }
+}
+
+@media (width < 391px) {
+  .today-date {
+    font-size: 4.3em;
+  }
+
+  .box {
+    width: 9vh;
+    height: 9vh;
+    margin: -0.56vh;
+  }
+
+  .boxs {
+    margin-top: 25.8vh;
+  }
+
+  /* .go-tree-btn {
+    margin-top: -3vh;
+  } */
+}
+
+@media (width < 381px) {
+  .box {
+    margin: -0.4vh;
+  }
+  .boxs {
+    margin-top: 27vh;
+  }
+}
+
+/* 사파리 탭 viewport 약 131px */
+/* 삼성 탭 viewport 약 60px */
+
+@media (width < 431px) and (height < 933px) {
+  .box {
+    margin: -0.48vh;
+  }
+
+  .boxs {
+    margin-top: 28.2vh;
+  }
+}
+
+@media (width < 431px) and (height < 802px) {
+  .box {
+    margin: -0.39vh;
+  }
+
+  .boxs {
+    margin-top: 28.9vh;
+  }
+}
+
+@media (width < 429px) and (height < 796px) {
+  .box {
+    margin: -0.4vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+    margin-right: 0;
+  }
+}
+
+@media (width < 415px) and (height < 766px) {
+  .box {
+    width: 9.5vh;
+    height: 9.5vh;
+    margin: -0.39vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+  }
+}
+
+@media (width < 413px) and (height < 945px) {
+  .box {
+    width: 9.5vh;
+    height: 9.5vh;
+    margin: -0.75vh;
+  }
+
+  .boxs {
+    margin-top: 26.5vh;
+  }
+}
+
+@media (width < 413px) and (height < 856px) {
+  .box {
+    width: 9.5vh;
+    height: 9.5vh;
+    margin: -0.39vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+  }
+}
+
+@media (width < 394px) and (height < 853px) {
+  .box {
+    margin: -0.36vh;
+  }
+}
+
+@media (width < 394px) and (height < 722px) {
+  .box {
+    margin: -0.38vh;
+  }
+
+  .boxs {
+    margin-top: 28.8vh;
+    margin-right: 1.5px;
+  }
+}
+
+@media (width < 391px) and (height < 845px) {
+  .box {
+    width: 9.5vh;
+    height: 9.5vh;
+    margin: -0.5vh;
+  }
+
+  .boxs {
+    margin-top: 28vh;
+  }
+}
+
+@media (width < 391px) and (height < 714px) {
+  .box {
+    width: 9.5vh;
+    height: 9.5vh;
+    margin: -0.4vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+  }
+}
+
+@media (width < 385px) and (height < 795px) {
+  .box {
+    width: 9.5vh;
+    height: 9.5vh;
+    margin: -0.4vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+    margin-right: 0;
+  }
+}
+
+@media (width < 376px) and (height < 766px) {
+  .box {
+    margin: -0.39vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+    margin-right: 1px;
+  }
+}
+
+@media (width < 376px) and (height < 636px) {
+  .box {
+    margin: -0.4vh;
+  }
+
+  .boxs {
+    margin-top: 28.7vh;
+    margin-right: 1.5px;
+  }
+}
+
+@media (width < 321px) and (height < 438px) {
+  .today-date {
+    font-size: 60px;
+  }
+
+  .main-calendar {
+    margin-top: -5px;
+  }
+
+  .box p {
+    font-size: 1.8em;
+  }
+
+  .boxs {
+    margin-right: 0;
+  }
+
+  .go-tree-btn p {
+    font-size: 10px;
+  }
 }
