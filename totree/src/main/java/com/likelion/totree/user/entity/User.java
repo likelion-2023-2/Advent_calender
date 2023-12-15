@@ -58,6 +58,10 @@ public class User {
     public void ticketUp(){
         this.ticket+=1;
     }
+
+    public void ticketDoubleUp(){
+        this.ticket+=2;
+    }
     public void ticketDown(){
         this.ticket-=1;
     }

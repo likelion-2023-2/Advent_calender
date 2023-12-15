@@ -119,6 +119,13 @@ public class UserService {
         user.ticketUp();
         return UserResponse.of(user);
     }
+    @Transactional
+    public UserResponse getDoubleTicket(String nickname) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(
+                () -> new RuntimeException("닉네임 " + nickname + "인 사용자를 찾을 수 없습니다."));
+        user.ticketDoubleUp();
+        return UserResponse.of(user);
+    }
 
     @Transactional
     public ResponseEntity savePost(String nickname, String content, int date) throws DifferentDateError, AlreadyExistsError{

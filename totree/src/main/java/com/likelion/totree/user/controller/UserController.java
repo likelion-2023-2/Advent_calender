@@ -94,6 +94,11 @@ public class UserController {
         return userService.getTicket(userDetails.getUsername());  // username = nickname
     }
 
+    @GetMapping("/get-double-ticket")
+    public UserResponse getDoubleTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.getDoubleTicket(userDetails.getUsername());  // username = nickname
+    }
+
     /**
      *  AccessToken  재발급
      * 매 API 호출 시 시큐리티필터를 통해 인증인가를 받게  된다. 이때 만료된 토큰인지 검증하고 만료시 만료된토큰임을 에러메세지로 보낸다.
