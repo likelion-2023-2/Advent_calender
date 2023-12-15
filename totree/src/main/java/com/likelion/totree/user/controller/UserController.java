@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000, https://totree.netlify.app")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
