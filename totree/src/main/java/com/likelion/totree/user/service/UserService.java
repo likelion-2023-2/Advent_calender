@@ -27,6 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -133,9 +137,13 @@ public class UserService {
                 () -> new RuntimeException("해당 닉네임을 가진 사용자를 찾을 수 없습니다.")
         );
 
-        LocalDate currentDate = LocalDate.now();
-        if (currentDate.getDayOfMonth() != date) {
-            throw new DifferentDateError("오늘이 아닙니다");
+        LocalDateTime currentDate = LocalDateTime.now();
+        ZoneId zoneId = ZoneId.of("Asia/Seoul");
+        ZonedDateTime zonedDateTime = currentDate.atZone(zoneId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        if (zonedDateTime.getDayOfMonth() != date) {
+            throw new DifferentDateError(zonedDateTime.format(formatter)+"오늘이 아닙니다");
         }
         Optional<Post> existingPost = postRepository.findByUserAndDate(user, date);
 
@@ -164,9 +172,13 @@ public class UserService {
             throw new NoTicketError();
         }
 
-        LocalDate currentDate = LocalDate.now();
-        if (currentDate.getDayOfMonth() <= date) {
-            throw new DifferentDateError("현재 날짜보다 이전이어야 합니다");
+        LocalDateTime currentDate = LocalDateTime.now();
+        ZoneId zoneId = ZoneId.of("Asia/Seoul"); // 원하는 시간대로 변경
+        ZonedDateTime zonedDateTime = currentDate.atZone(zoneId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        if (zonedDateTime.getDayOfMonth() <= date) {
+            throw new DifferentDateError(zonedDateTime.format(formatter)+"현재 날짜보다 이전이어야 합니다");
         }
         Optional<Post> existingPost = postRepository.findByUserAndDate(user, date);
 
