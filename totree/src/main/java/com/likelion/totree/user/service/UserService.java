@@ -211,6 +211,19 @@ public class UserService {
 
         return postResponses;
     }
+    @Transactional(readOnly = true)
+    public List<PostResponse> getNicknamePosts(String nickname){
+        User user = userRepository.findByNickname(nickname).orElseThrow(
+                () -> new RuntimeException("해당 닉네임을 가진 사용자를 찾을 수 없습니다.")
+        );
+
+        List<Post> userPosts = user.getPosts();
+        List<PostResponse> postResponses = userPosts.stream()
+                .map(PostResponse::of)
+                .collect(Collectors.toList());
+
+        return postResponses;
+    }
 
     @Transactional
     public ResponseEntity updateReceiver(String nickname, String newReceiver) {
@@ -223,4 +236,6 @@ public class UserService {
 
         return ResponseEntity.ok("Receiver 정보 업데이트");
     }
+
+
 }

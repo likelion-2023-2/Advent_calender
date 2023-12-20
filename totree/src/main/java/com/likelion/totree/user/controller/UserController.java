@@ -14,6 +14,7 @@ import com.likelion.totree.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -167,6 +168,15 @@ public class UserController {
     @GetMapping("/readposts")
     public ResponseEntity<List<PostResponse>> getUserPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<PostResponse> userPosts = userService.getUserPosts(userDetails.getUsername());
+        List<PostResponse> sortedUserPosts=userPosts.stream()
+                .sorted(Comparator.comparingInt(PostResponse::getDate))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userPosts);
+    }
+
+    @GetMapping("/readposts/{nickname}")
+    public ResponseEntity<List<PostResponse>> getNicknamePosts(@PathVariable String nickname) {
+        List<PostResponse> userPosts = userService.getNicknamePosts(nickname);
         List<PostResponse> sortedUserPosts=userPosts.stream()
                 .sorted(Comparator.comparingInt(PostResponse::getDate))
                 .collect(Collectors.toList());
