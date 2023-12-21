@@ -6,10 +6,7 @@ import com.likelion.totree.security.exception.AlreadyExistsError;
 import com.likelion.totree.security.exception.DifferentDateError;
 import com.likelion.totree.security.exception.NoTicketError;
 import com.likelion.totree.security.jwt.JwtProvider;
-import com.likelion.totree.user.dto.LoginRequest;
-import com.likelion.totree.user.dto.PostResponse;
-import com.likelion.totree.user.dto.SignUpRequest;
-import com.likelion.totree.user.dto.UserResponse;
+import com.likelion.totree.user.dto.*;
 import com.likelion.totree.user.entity.Post;
 import com.likelion.totree.user.entity.User;
 import com.likelion.totree.user.entity.UserRoleEnum;
@@ -31,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -212,17 +210,23 @@ public class UserService {
         return postResponses;
     }
     @Transactional(readOnly = true)
-    public List<PostResponse> getNicknamePosts(String nickname){
+    public PublishResponse getNicknamePosts(String nickname){
         User user = userRepository.findByNickname(nickname).orElseThrow(
                 () -> new RuntimeException("해당 닉네임을 가진 사용자를 찾을 수 없습니다.")
         );
+        PublishResponse publishResponse=new PublishResponse();
 
         List<Post> userPosts = user.getPosts();
         List<PostResponse> postResponses = userPosts.stream()
                 .map(PostResponse::of)
                 .collect(Collectors.toList());
 
-        return postResponses;
+        publishResponse.setPostList(postResponses);
+        publishResponse.setReceiver(user.getReceiver());
+        publishResponse.setNickname(nickname);
+        publishResponse.setOrnament(user.getOrnament());
+
+        return publishResponse;
     }
 
     @Transactional

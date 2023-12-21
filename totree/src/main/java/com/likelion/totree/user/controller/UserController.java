@@ -175,12 +175,10 @@ public class UserController {
     }
 
     @GetMapping("/readposts/{nickname}")
-    public ResponseEntity<List<PostResponse>> getNicknamePosts(@PathVariable String nickname) {
-        List<PostResponse> userPosts = userService.getNicknamePosts(nickname);
-        List<PostResponse> sortedUserPosts=userPosts.stream()
-                .sorted(Comparator.comparingInt(PostResponse::getDate))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(userPosts);
+    public ResponseEntity<PublishResponse> getNicknamePosts(@PathVariable String nickname) {
+        PublishResponse publishResponse = userService.getNicknamePosts(nickname);
+
+        return ResponseEntity.ok(publishResponse);
     }
 
     @PatchMapping("/update-receiver")
