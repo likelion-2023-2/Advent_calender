@@ -12,6 +12,7 @@ import com.likelion.totree.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -212,6 +213,13 @@ public class UserController {
                 .sorted(Comparator.comparingInt(PostResponse::getDate))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userPosts);
+    }
+
+    @GetMapping("/readposts/{nickname}")
+    public ResponseEntity<PublishResponse> getNicknamePosts(@PathVariable String nickname) {
+        PublishResponse publishResponse = userService.getNicknamePosts(nickname);
+
+        return ResponseEntity.ok(publishResponse);
     }
 
     @PatchMapping("/update-receiver")
