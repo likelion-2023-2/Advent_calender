@@ -13,4 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByUserNickname(String nickname);
     Optional<Post> findByUserAndDate(User user, int date);
+
+    void deleteByUser(User user);
 }

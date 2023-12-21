@@ -1,9 +1,7 @@
 package com.likelion.totree.user.controller;
 
 import com.likelion.totree.security.dto.TokenResponse;
-import com.likelion.totree.security.exception.AlreadyExistsError;
-import com.likelion.totree.security.exception.DifferentDateError;
-import com.likelion.totree.security.exception.NoTicketError;
+import com.likelion.totree.security.exception.*;
 import com.likelion.totree.security.jwt.JwtProvider;
 import com.likelion.totree.security.service.UserDetailsImpl;
 import com.likelion.totree.user.dto.*;
@@ -89,14 +87,33 @@ public class UserController {
         return userService.getUserInfo(userDetails.getUsername());  // username = nickname
     }
 
+//    @GetMapping("/get-ticket")
+//    public UserResponse getTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return userService.getTicket(userDetails.getUsername());  // username = nickname
+//    }
     @GetMapping("/get-ticket")
-    public UserResponse getTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.getTicket(userDetails.getUsername());  // username = nickname
+    public ResponseEntity<Object> getTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            UserResponse userResponse = userService.getTicket(userDetails.getUsername());
+            return ResponseEntity.ok().body(userResponse);
+        } catch (TicketIssueException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }  // username = nickname
     }
 
+//    @GetMapping("/get-double-ticket")
+//    public UserResponse getDoubleTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return userService.getDoubleTicket(userDetails.getUsername());  // username = nickname
+//    }
+
     @GetMapping("/get-double-ticket")
-    public UserResponse getDoubleTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.getDoubleTicket(userDetails.getUsername());  // username = nickname
+    public ResponseEntity<Object> getDoubleTicket(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            UserResponse userResponse = userService.getDoubleTicket(userDetails.getUsername());
+            return ResponseEntity.ok().body(userResponse);
+        } catch (DoubleTicketIssueException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     /**
@@ -138,6 +155,30 @@ public class UserController {
         }
 
     }
+
+//    @PostMapping("/repost/{date}")
+//    public ResponseEntity<String> saveRePost(
+//            @PathVariable int date,
+//            @RequestBody Map<String, String> requestBody,
+//            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//
+//        LocalDate currentDate = LocalDate.now();
+//        String content = requestBody.get("content");
+//
+//
+//        try{
+//            userService.saveRePost(userDetails.getUsername(), content, date);
+//            return ResponseEntity.ok("글이 성공적으로 저장되었습니다.");
+//        }catch(AlreadyExistsError e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }catch (DifferentDateError e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//
+//        }catch(NoTicketError e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//
+//    }
 
     @PostMapping("/ticket/post/{date}")
     public ResponseEntity<String> ticketSavePost(

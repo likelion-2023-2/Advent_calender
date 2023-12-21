@@ -46,7 +46,6 @@ public class UserService {
     private final RedisDao redisDao;
 
 
-
     @Transactional
     public ResponseEntity signup(@Valid SignUpRequest signUpRequest) {
         String nickname = signUpRequest.getNickname();
@@ -163,6 +162,38 @@ public class UserService {
         return ResponseEntity.ok("글이 성공적으로 저장되었습니다.");
     }
 
+//    @Transactional
+//    public ResponseEntity saveRePost(String nickname, String content, int date) throws DifferentDateError, AlreadyExistsError{
+//        User user = userRepository.findByNickname(nickname).orElseThrow(
+//                () -> new RuntimeException("해당 닉네임을 가진 사용자를 찾을 수 없습니다.")
+//        );
+//
+//        LocalDateTime currentDate = LocalDateTime.now();
+//        ZoneId zoneId = ZoneId.of("Asia/Seoul");
+//        ZonedDateTime zonedDateTime = currentDate.atZone(zoneId);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//
+////        if (zonedDateTime.getDayOfMonth() != date) {
+////            throw new DifferentDateError(zonedDateTime.format(formatter)+"오늘이 아닙니다");
+////        }
+//        Optional<Post> existingPost = postRepository.findByUserAndDate(user, date);
+//
+//        if (existingPost.isPresent()) {
+//            throw new AlreadyExistsError();
+//        }
+//
+//        Post post = Post.builder()
+//                .content(content)
+//                .user(user)
+//                .date(date)
+//                .build();
+//
+//        user.addPost(post);
+//        userRepository.save(user);
+//
+//        return ResponseEntity.ok("글이 성공적으로 저장되었습니다.");
+//    }
+
     @Transactional
     public ResponseEntity saveTicketPost(String nickname, String content, int date) throws DifferentDateError, AlreadyExistsError,NoTicketError{
         User user = userRepository.findByNickname(nickname).orElseThrow(
@@ -213,14 +244,20 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity updateReceiver(String nickname, String newReceiver) {
+    public ResponseEntity<String> updateReceiver(String nickname, String newReceiver) {
         User user = userRepository.findByNickname(nickname).orElseThrow(
                 () -> new RuntimeException("해당 닉네임을 가진 사용자를 찾을 수 없습니다.")
         );
+
+        deletePosts(user);
 
         user.setReceiver(newReceiver);
         userRepository.save(user);
 
         return ResponseEntity.ok("Receiver 정보 업데이트");
+    }
+
+    private void deletePosts(User user) {
+        postRepository.deleteByUser(user);
     }
 }

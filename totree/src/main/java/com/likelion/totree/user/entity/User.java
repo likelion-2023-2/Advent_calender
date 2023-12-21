@@ -1,11 +1,17 @@
 package com.likelion.totree.user.entity;
 
+import com.likelion.totree.security.exception.DoubleTicketIssueException;
+import com.likelion.totree.security.exception.TicketIssueException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +47,9 @@ public class User {
 
     private Boolean inUser;  // 추후 휴면계정 관리 시 사용
 
+    private LocalDateTime lastTicketUpTime;
+    private LocalDateTime lastDoubleTicketUpTime;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
@@ -55,12 +64,46 @@ public class User {
         this.posts = new ArrayList<>();
     }
 
-    public void ticketUp(){
-        this.ticket+=1;
+//    public void ticketUp(){
+//        this.ticket+=1;
+//    }
+//
+//    public void ticketDoubleUp(){
+//        this.ticket+=2;
+//    }
+
+    /**이전 코드*/
+//    public void ticketUp() {
+//        LocalDateTime now = LocalDateTime.now();
+//        if (canIssueTicket(now, lastTicketUpTime, 1)) {
+//            this.ticket += 1;
+//            this.lastTicketUpTime = now;
+//        } else {
+//            throw new RuntimeException("티켓 발급은 1분에 한 번만 가능");
+//        }
+//    }
+    public void ticketUp() {
+        LocalDateTime now = LocalDateTime.now();
+        if (canIssueTicket(now, lastTicketUpTime, 360)) {
+            this.ticket += 1;
+            this.lastTicketUpTime = now;
+        } else {
+            throw new TicketIssueException();
+        }
     }
 
-    public void ticketDoubleUp(){
-        this.ticket+=2;
+    public void ticketDoubleUp() {
+        LocalDateTime now = LocalDateTime.now();
+        if (canIssueTicket(now, lastDoubleTicketUpTime, 720)) {
+            this.ticket += 2;
+            this.lastDoubleTicketUpTime = now;
+        } else {
+            throw new DoubleTicketIssueException();
+        }
+    }
+
+    private boolean canIssueTicket(LocalDateTime now, LocalDateTime lastTime, int count) {
+        return lastTime== null || ChronoUnit.MINUTES.between(lastTime, now) >= count;
     }
     public void ticketDown(){
         this.ticket-=1;
